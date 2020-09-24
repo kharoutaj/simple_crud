@@ -29,11 +29,13 @@ def test_create_info_user():
     response = requests.post(create_url, headers={"Content-Type": "application/json"},
                              data=json.dumps(test_user))
     assert response.status_code == 200
+    assert response.headers.get('content-type') == 'application/json'
     data = response.json()
     assert 'data' in data
     user_id = data['data']
     response = requests.get(info_url + user_id)
     assert response.status_code == 200
+    assert response.headers.get('content-type') == 'application/json'
     data = response.json()
     assert 'data' in data
     assert data['data'] == test_user
@@ -59,6 +61,7 @@ def test_update_no_updates():
     response = requests.post(create_url, headers={"Content-Type": "application/json"},
                              data=json.dumps(test_user))
     assert response.status_code == 200
+    assert response.headers.get('content-type') == 'application/json'
     data = response.json()
     assert 'data' in data
     user_id = data['data']
@@ -81,12 +84,14 @@ def test_deleted_user():
     response = requests.post(create_url, headers={"Content-Type": "application/json"},
                              data=json.dumps(test_user))
     assert response.status_code == 200
+    assert response.headers.get('content-type') == 'application/json'
     data = response.json()
     assert 'data' in data
     user_id = data['data']
     test_user["id"] = user_id
     response = requests.delete(delete_url + user_id)
     assert response.status_code == 200
+    assert response.headers.get('content-type') == 'application/json'
     response = requests.delete(delete_url + user_id)
     assert response.status_code == 404
 
@@ -96,6 +101,7 @@ def test_crud_user():
     response = requests.post(create_url, headers={"Content-Type": "application/json"},
                              data=json.dumps(test_user))
     assert response.status_code == 200
+    assert response.headers.get('content-type') == 'application/json'
     data = response.json()
     assert 'data' in data
     user_id = data['data']
@@ -106,8 +112,10 @@ def test_crud_user():
     response = requests.put(update_url + user_id, headers={"Content-Type": "application/json"},
                             data=json.dumps(test_user))
     assert response.status_code == 200
+    assert response.headers.get('content-type') == 'application/json'
     response = requests.get(info_url + user_id)
     assert response.status_code == 200
+    assert response.headers.get('content-type') == 'application/json'
     data = response.json()
     assert 'data' in data
     assert data['data'] == test_user
@@ -115,5 +123,4 @@ def test_crud_user():
     test_user_db[user_id] = test_user
     cleanup_users()
     assert not test_user_db
-
-
+    test_user.pop("id")

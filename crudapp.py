@@ -6,6 +6,11 @@ seven_app = Flask(__name__)
 # -- this dictionary will serve as in-memory db for this exercise
 user_db = {}
 
+# -- These API endpoints provide a REST CRUD interface for a simple user entity
+# -- The user entity has the following fields:
+# -- first_name, last_name, email
+# -- These entries are stored in memory within a hash table that is keyed by uuid generated at user creation
+
 
 @seven_app.route('/users/create', methods=['POST'])
 def create_user():
